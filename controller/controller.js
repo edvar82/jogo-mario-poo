@@ -1,33 +1,39 @@
-class Controller{
-    constructor (mario, pipe, cloud, btn){
+class Controller {
+    constructor(mario, pipe, cloud, btn, pontuation) {
         this.mario = document.getElementById(mario);
         this.pipe = document.getElementById(pipe);
         this.cloud = document.getElementById(cloud);
         this.btn = document.getElementById(btn);
+        this.time = document.getElementById(pontuation);
+        this.end = false;
+        this.cont = 0;
         this.game();
     }
-    game(){
-        document.addEventListener('click', ()=>{
+    game() {
+
+        document.addEventListener('click', () => {
             this.jump();
         })
-        document.addEventListener('keydown', ()=>{
+        document.addEventListener('keydown', () => {
             this.jump();
         })
 
-        let interval = setInterval(()=>{
+        let interval = setInterval(() => {
+            let cont = 0;
             let pipePosition = this.pipe.offsetLeft;
             let cloudPosition = this.cloud.offsetLeft;
-            let marioPosition = +window.getComputedStyle(this.mario).bottom.replace('px','');
+            let marioPosition = +window.getComputedStyle(this.mario).bottom.replace('px', '');
 
-            if(pipePosition <= 120 && pipePosition > 0 && marioPosition < 80){
-
+            if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 80) {
+                
+                this.end = true;
                 this.pipe.style.animation = 'none';
                 this.pipe.style.left = `${pipePosition}px`;
 
                 this.mario.style.animation = 'none';
                 this.mario.style.bottom = `${marioPosition}px`;
 
-                this.mario.src = './img/game-over.png';
+                this.mario.src = './assets/img/game-over.png';
                 this.mario.style.width = '75px'
                 this.mario.style.marginLeft = '50px';
 
@@ -37,19 +43,30 @@ class Controller{
                 clearInterval(interval);
 
                 this.btn.style.display = 'block';
-                this.btn.addEventListener('click', ()=>{
+                this.btn.addEventListener('click', () => {
                     location.reload();
                 });
             }
+        }, 10);
 
-        },10);
+        let interval2 = setInterval(() => {
+            this.cont++;
+            this.time.innerHTML = `Pontuação: ${this.cont}`;
+            if (this.end) {
+                clearInterval(interval2);
+            }
+        }, 100)
     }
-    jump(){
-       
+    jump() {
         this.mario.classList.add('mario-jump');
-        setTimeout(()=>{
+        this.jump_music();
+        setTimeout(() => {
             this.mario.classList.remove('mario-jump');
-        },500);
-        
+        }, 500);
+    }
+    jump_music() {
+        let audio = new Audio;
+        audio.src = './assets/music/jump.mp3';
+        audio.play();
     }
 }

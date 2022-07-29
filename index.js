@@ -1,1 +1,1 @@
-let controller = new Controller('mario', 'pipe', 'cloud', 'btn');
+let controller = new Controller('mario', 'pipe', 'cloud', 'btn', 'pontuation');
