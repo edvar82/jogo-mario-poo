@@ -7,6 +7,8 @@ class Controller {
         this.time = document.getElementById(pontuation);
         this.end = false;
         this.cont = 0;
+        this.audio = new Audio;
+        this.soundTrack = new Audio;
         this.game();
     }
     game() {
@@ -19,13 +21,11 @@ class Controller {
         })
 
         let interval = setInterval(() => {
-            let cont = 0;
             let pipePosition = this.pipe.offsetLeft;
             let cloudPosition = this.cloud.offsetLeft;
             let marioPosition = +window.getComputedStyle(this.mario).bottom.replace('px', '');
 
             if (pipePosition <= 120 && pipePosition > 0 && marioPosition < 80) {
-                
                 this.end = true;
                 this.pipe.style.animation = 'none';
                 this.pipe.style.left = `${pipePosition}px`;
@@ -59,14 +59,13 @@ class Controller {
     }
     jump() {
         this.mario.classList.add('mario-jump');
-        this.jump_music();
+        if (!this.end) this.jump_music();
         setTimeout(() => {
             this.mario.classList.remove('mario-jump');
         }, 500);
     }
     jump_music() {
-        let audio = new Audio;
-        audio.src = './assets/music/jump.mp3';
-        audio.play();
+        this.audio.src = './assets/music/jump.mp3';
+        this.audio.play();
     }
 }
